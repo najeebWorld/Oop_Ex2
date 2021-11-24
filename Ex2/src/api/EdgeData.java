@@ -21,6 +21,7 @@ public interface EdgeData {
 	 */
 	public double getWeight();
 	/**
+	 * //lentgh
 	 * Returns the remark (meta data) associated with this edge.
 	 * @return
 	 */
