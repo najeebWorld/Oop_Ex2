@@ -1,5 +1,7 @@
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import api.Graph;
+import org.json.simple.parser.ParseException;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -41,7 +43,8 @@ public class Ex2 {
         // ********************************
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        Graph graph=new Graph("Ex2/data/G2.json");
 
     }
 }

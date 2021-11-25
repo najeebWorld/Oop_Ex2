@@ -5,5 +5,8 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="json-20131018" level="project" />
+    <orderEntry type="library" exported="" name="JsonProcessing" level="project" />
+    <orderEntry type="library" exported="" name="json-simple-1.1" level="project" />
   </component>
 </module>
