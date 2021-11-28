@@ -120,7 +120,8 @@ public class Graph implements DirectedWeightedGraph{
 
     @Override
     public NodeData removeNode(int key) {
-        return this.Nodes.remove(key);
+        this.Nodes.remove(key);
+        return null;
     }
 
     @Override

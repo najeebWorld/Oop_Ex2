@@ -7,6 +7,7 @@ public class Edge implements EdgeData{
     int tag;//its the color of vertex.
     // 0 - white , 1- gray , 2 - black.
 
+
     public Edge(int src, int dis, double weight) {
         this.src = src;
         this.dis = dis;
