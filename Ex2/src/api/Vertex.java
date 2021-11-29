@@ -1,6 +1,7 @@
 package api;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class Vertex implements NodeData{
     int id;
@@ -8,6 +9,7 @@ public class Vertex implements NodeData{
     double weight;
     String info;
     int tag;
+    HashMap<Integer,Integer> nodes;
 
     public Vertex(int id,Geo pos,int tag,double weight,String info){
         this.id = id;
@@ -15,6 +17,7 @@ public class Vertex implements NodeData{
         this.weight=weight;
         this.info = info;
         this.tag=tag;
+        this.nodes = new HashMap<Integer,Integer>();
 
 
     }
@@ -61,5 +64,17 @@ public class Vertex implements NodeData{
     @Override
     public void setTag(int t) {
         this.tag = t;
+    }
+
+    public void addToMeList(Edge n){
+        this.nodes.put(n.src,n.src);
+    }
+
+    public void removeFromList(int n){
+        this.nodes.remove(n);
+    }
+
+    public HashMap<Integer,Integer> getnodes(){
+        return this.nodes;
     }
 }

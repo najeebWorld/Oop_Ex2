@@ -19,11 +19,13 @@ public class Graph implements DirectedWeightedGraph{
 //    NodeData node2;
 //    EdgeData edge;
 
-    HashMap<Integer, Vertex> Nodes = new HashMap<Integer, Vertex>();
-    HashMap<Double,Edge> Edges = new HashMap<Double, Edge>();//must do it(x,y)
+    HashMap<Integer, Vertex> Nodes ;
+    HashMap<Integer , HashMap< Integer,Edge> > Edges ;
 
 
     public Graph(String jsonName) throws ParseException {
+        Nodes=new HashMap<>();
+        Edges=new HashMap<>();
         String filename = jsonName;
         try {
             JSONObject jsonObject = parseJSONFile(filename);
@@ -58,19 +60,17 @@ public class Graph implements DirectedWeightedGraph{
             Double w = edges.getJSONObject(i).getDouble("w");
             Integer dest = edges.getJSONObject(i).getInt("dest");
             Edge a = new Edge(src,dest,w);
-            double key1 = d(src,dest);
-            this.Edges.put(key1,a);
+            if(this.Edges.containsKey(src)){
+                this.Edges.get(src).put(dest,a);
+            }else{
+                this.Edges.put(src,new HashMap<>());
+                this.Edges.get(src).put(dest,a);
+            }
+
 
         }
     }
-    private double d(int src,int dest){
-       double a = (double)src;
-        double b = (double)dest;
-        while(b>=1){
-           b = b/10;
-        }
-        return a+b;
-    }
+
     @Override
     public NodeData getNode(int key) {
 
@@ -80,7 +80,7 @@ public class Graph implements DirectedWeightedGraph{
     @Override
     public EdgeData getEdge(int src, int dest) {
 
-        return this.Edges.get(d(src,dest));
+        return this.Edges.get(src).get(dest);
     }
 
     @Override
@@ -93,9 +93,14 @@ public class Graph implements DirectedWeightedGraph{
 
     @Override
     public void connect(int src, int dest, double w) {
-        Edge a = new Edge(src,dest,w);
-        double key1 = d(src,dest);
-        this.Edges.put(key1,a);
+            Edge a = new Edge(src,dest,w);
+           if(this.Edges.containsKey(src)){
+            this.Edges.get(src).put(dest,a);
+             }else{
+            this.Edges.put(src,new HashMap<>());
+            this.Edges.get(src).put(dest,a);
+        }
+
     }
 
     @Override
@@ -115,28 +120,47 @@ public class Graph implements DirectedWeightedGraph{
 
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
-        return null;
+        HashMap<Integer,EdgeData> a = (HashMap<Integer, EdgeData>)this.Edges.get(node_id).clone() ;
+        Iterator<EdgeData> iter = a.values().iterator();
+        return iter;
     }
 
     @Override
     public NodeData removeNode(int key) {
+        Vertex node = this.Nodes.get(key);
+        for (Integer i: this.Edges.get(key).keySet()){
+            this.Nodes.get(i).removeFromList(key);
+        }
+        this.Edges.remove(key);
+        HashMap<Integer,Integer> here = node.getnodes();
+        for (Integer i: here.values()){
+            this.Edges.get(i).remove(key);
+        }
         this.Nodes.remove(key);
-        return null;
+        return (NodeData) node;
     }
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
-        return null;
+        EdgeData edg = this.Edges.get(src).get(dest);
+        this.Nodes.get(dest).removeFromList(src);
+        this.Edges.get(src).remove(dest);
+        return  edg;
     }
 
     @Override
     public int nodeSize() {
-        return 0;
+        return Nodes.size();
     }
 
     @Override
     public int edgeSize() {
-        return 0;
+
+        int count= 0;
+        for (Integer i: this.Edges.keySet()){
+            count += this.Edges.get(i).size();
+        }
+        return count;
     }
 
     @Override
