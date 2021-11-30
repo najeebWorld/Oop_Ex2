@@ -23,7 +23,7 @@ public class Edge implements EdgeData{
 
     @Override
     public int getDest() {
-        return this.getDest();
+        return this.dis;
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Vertex implements NodeData{
     double weight;
     String info;
     int tag;
+    Geo g;
     HashMap<Integer,Integer> nodes;
 
     public Vertex(int id,Geo pos,int tag,double weight,String info){
@@ -18,12 +19,19 @@ public class Vertex implements NodeData{
         this.info = info;
         this.tag=tag;
         this.nodes = new HashMap<Integer,Integer>();
-
+    }
+    public Vertex(int id , Geo g){
+        this.id = id;
+        this.pos = g;
+        this.tag = 0;
+        this.nodes = new HashMap<Integer,Integer>();
+        this.weight = 0;
+        this.info = null;
 
     }
     @Override
     public int getKey() {
-        return this.getKey();
+        return this.id;
     }
 
     @Override

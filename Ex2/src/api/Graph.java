@@ -14,10 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class Graph implements DirectedWeightedGraph{
-//    NodeData node;
-//    NodeData node2;
-//    EdgeData edge;
+public class Graph  implements DirectedWeightedGraph{
+
 
     HashMap<Integer, Vertex> Nodes ;
     HashMap<Integer , HashMap< Integer,Edge> > Edges ;

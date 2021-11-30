@@ -55,9 +55,9 @@ public class Geo implements GeoLocation {
 
     @Override
     public double distance(GeoLocation g) {
-        double  one  = Math.pow((g.x() -this.x),2);
-        double two =Math.pow((g.y() -this.y),2);
-        double three = Math.pow((g.z() -this.z),2);
+        double  one  = Math.pow((g.x()-this.x),2);
+        double two =Math.pow((g.y()-this.y),2);
+        double three = Math.pow((g.z()-this.z),2);
         double final1 = one+two+three;
         final1 = Math.sqrt(final1);
 
