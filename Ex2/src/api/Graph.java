@@ -17,9 +17,9 @@ import java.util.Iterator;
 public class Graph  implements DirectedWeightedGraph{
 
 
+
     HashMap<Integer, Vertex> Nodes ;
     HashMap<Integer , HashMap< Integer,Edge> > Edges ;
-
 
     public Graph(String jsonName) throws ParseException {
         Nodes=new HashMap<>();
@@ -36,6 +36,15 @@ public class Graph  implements DirectedWeightedGraph{
         }
 
 
+    }
+    public Graph(Graph g){
+        HashMap<Integer, Vertex> Nodes = g.Nodes;
+        HashMap<Integer , HashMap< Integer,Edge> > Edges =g.Edges;
+
+    }
+    public Graph(){
+        this.Nodes=new HashMap<Integer,Vertex>();
+        this.Edges=new HashMap<Integer,HashMap< Integer,Edge>>();
     }
     public static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
         String content = new String(Files.readAllBytes(Paths.get(filename)));

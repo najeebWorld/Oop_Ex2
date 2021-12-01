@@ -11,6 +11,11 @@ public class Geo implements GeoLocation {
         this.z=z;
 
     }
+    public Geo (Geo v){
+        this.x=v.x();
+        this.y=v.y();
+        this.z=v.z();
+    }
     public Geo (String s){
         int a = 0;
         int b=0;

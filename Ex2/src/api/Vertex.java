@@ -29,6 +29,21 @@ public class Vertex implements NodeData{
         this.info = null;
 
     }
+
+    public Vertex(Vertex v){
+        this.id = v.getKey();
+        this.pos = (Geo) v.getLocation();
+        this.weight=v.getWeight();
+        this.info = v.getInfo();
+        this.tag=v.getTag();
+        this.nodes = v.gethashmap();
+    }
+
+    public HashMap<Integer, Integer> gethashmap() {
+
+        return this.nodes;
+    }
+
     @Override
     public int getKey() {
         return this.id;
