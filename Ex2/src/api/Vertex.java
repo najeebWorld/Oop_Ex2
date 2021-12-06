@@ -56,7 +56,7 @@ public class Vertex implements NodeData{
 
     @Override
     public void setLocation(GeoLocation p) {
-     this.pos=(Geo)p;
+        this.pos=(Geo)p;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Vertex implements NodeData{
 
     @Override
     public void setWeight(double w) {
-    this.weight=w;
+        this.weight=w;
     }
 
     @Override

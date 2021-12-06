@@ -10,7 +10,7 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GraphTest {
-    Graph gr = new Graph("C:\\Users\\Admin\\IdeaProjects\\Oop_Ex2\\Ex2\\data\\G1.json");
+    Graph gr = new Graph("data\\G1.json");
 
     GraphTest() throws ParseException {
     }
@@ -22,7 +22,7 @@ class GraphTest {
 
     @Test
     void getNode() {
-        Geo p = new Geo(35.212111165456015,32.106235628571426,0.0);
+        Geo p = new Geo(35.197400995964486,32.10510889579832,0.0);
         NodeData n = new Vertex(10,p);
         assertEquals(n.getKey(),gr.getNode(10).getKey());
         assertEquals(n.getLocation().x(),gr.getNode(10).getLocation().x());

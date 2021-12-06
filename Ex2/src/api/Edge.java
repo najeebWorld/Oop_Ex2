@@ -1,4 +1,5 @@
-package api;
+
+        package api;
 
 public class Edge implements EdgeData{
     int src,dis;
@@ -14,6 +15,7 @@ public class Edge implements EdgeData{
         this.weight = weight;
         this.tag = 0;
         this.info = null;
+        //add_to_map(src,dis);
     }
     public Edge(Edge e){
         this.src=e.getSrc();
@@ -21,7 +23,17 @@ public class Edge implements EdgeData{
         this.weight=e.weight;
         this.tag=e.getTag();
         this.info=e.getInfo();
-}
+        //add_to_map(src,dis);
+    }
+
+    /*
+    public void add_to_map(int s, int d){
+       // find Vertex s;
+        // add to s's hashmap s,d
+
+    }
+     */
+
     @Override
     public int getSrc() {
         return this.src;
