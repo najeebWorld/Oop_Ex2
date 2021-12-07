@@ -49,10 +49,12 @@ public class Graph  implements DirectedWeightedGraph{
         HashMap<Integer, Vertex> Nodes = g.Nodes;
         HashMap<Integer , HashMap< Integer,EdgeData> > Edges =g.Edges;
 
+
     }
     public Graph(){
         this.Nodes=new HashMap<Integer,Vertex>();
         this.Edges=new HashMap<Integer,HashMap< Integer,EdgeData>>();
+        this.in=new HashMap<>();
     }
     public static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
         String content = new String(Files.readAllBytes(Paths.get(filename)));
@@ -64,6 +66,7 @@ public class Graph  implements DirectedWeightedGraph{
 
         for (int i =0; i< nodes.length();i++){
             Integer key = nodes.getJSONObject(i).getInt("id");
+
             String a =nodes.getJSONObject(i).getString("pos");
             Geo p = new Geo(a);
             Vertex b = new Vertex(key,p,0,0,"");
@@ -105,6 +108,7 @@ public class Graph  implements DirectedWeightedGraph{
         Integer key = n.getKey();
         this.Nodes.put(key,(Vertex) n);
         this.Edges.put(n.getKey(),new HashMap<>());
+
         this.in.put(n.getKey(),new HashMap<>());
         mc++;
     }

@@ -1,5 +1,7 @@
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+//import Tests.algo;
+
 import api.Graph;
 import org.json.simple.parser.ParseException;
 
@@ -44,9 +46,28 @@ public class Ex2 {
     }
 
     public static void main(String[] args) throws ParseException {
-        Graph graph=new Graph("Ex2/data/G2.json");
+         Graph graph=new Graph("Ex2/data/G2.json");
         System.out.println("Ex2/data/G2.json".toString());
-
+//        algo g = new algo("C:\\Users\\Admin\\IdeaProjects\\Oop_Ex2\\Ex2\\data\\G1.json");
+//        //g.load("C:\\Users\\User\\Downloads\\OOP_2021-main (1)\\OOP_2021-main\\Assignments\\Ex2\\data\\1000Nodes.json");
+//        double t1 = System.currentTimeMillis();
+//        g.isConnected();
+//        double t2 = System.currentTimeMillis();
+//        System.out.println(t2-t1);
+//        g.center();
+//        double t3 = System.currentTimeMillis();
+//        System.out.println(t3-t1);
+//
+//        algo g2 = new algo("C:\\Users\\Admin\\IdeaProjects\\Oop_Ex2\\Ex2\\data\\G1.json");
+//        //g2.load("C:\\Users\\User\\Downloads\\OOP_2021-main (1)\\OOP_2021-main\\Assignments\\Ex2\\data\\10000Nodes.json");
+//        double t4 = System.currentTimeMillis();
+//        g2.isConnected();
+//        double t5 = System.currentTimeMillis();
+//        System.out.println(t5-t4);
+//        g2.center();
+//        double t6 = System.currentTimeMillis();
+//        System.out.println(t6-t4);
+//
 
     }
 }
