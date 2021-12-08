@@ -42,7 +42,7 @@ class GraphTest {
         Iterator<NodeData> iterator = copy.nodeIter();
         Iterator<NodeData> iterator1 = graph123.nodeIter();
         while (iterator.hasNext()){
-            assertEquals(iterator.next().getLocation(), iterator1.next().getLocation());
+           assertEquals(iterator.next().getLocation(), iterator1.next().getLocation());
         }
         Iterator<EdgeData> iterator2 = copy.edgeIter();
         Iterator<EdgeData> iterator3 = graph123.edgeIter();
@@ -54,11 +54,11 @@ class GraphTest {
     @Test
     void isConnected() {
         assertEquals(true, graph.isConnected());
-        graph.getGraph().removeEdge(4,0);
+         graph.getGraph().removeEdge(4,0);
         assertEquals(false, graph.isConnected());
         graph.getGraph().connect(6,0,0.954);
         boolean b=graph.isConnected();
-        assertEquals(true, b);
+       assertEquals(true, b);
     }
 
     @Test
