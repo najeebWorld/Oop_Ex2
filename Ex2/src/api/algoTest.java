@@ -74,21 +74,46 @@ class GraphTest {
 
     @Test
     void shortestPath() {
-      HashMap<List<Integer>, List<NodeData>> m= graph.Floyd_Warshall_list();
+       // HashMap<List<Integer>, List<NodeData>> m= graph.Floyd_Warshall_list();
+        HashMap<List<Integer>, List<Integer>> m= graph.Floyd_Warshall_list(gr);
         List<NodeData> l= new ArrayList<NodeData>();
         l.add(this.gr.Nodes.get(0));
         l.add(this.gr.Nodes.get(1));
         l.add(this.gr.Nodes.get(2));
 
-      List<Integer> i=new ArrayList<Integer>();
-      i.add(0);
-      i.add(2);
+        List<Integer> i=new ArrayList<Integer>();
+        i.add(0);
+        i.add(2);
+        List<Integer> ans1=m.get(i);
+        System.out.println(ans1);
+        List<NodeData> ans=new ArrayList<NodeData>();
+        for (int j=0;j<ans1.size();j++){
+            ans.add(this.gr.Nodes.get(ans1.get(j)));
+        }
+        assertEquals(l,ans);
 
-      List<NodeData> ans=m.get(i);
+
+        l.clear();
+        l.add(this.gr.Nodes.get(5));
+        l.add(this.gr.Nodes.get(0));
+        l.add(this.gr.Nodes.get(9));
+        i.clear();
+        i.add(5);
+        i.add(9);
+        ans1.clear();
+        ans1=m.get(i);
+        System.out.println(ans1);
+        ans.clear();
+        for (int j=0;j<ans1.size();j++){
+            ans.add(this.gr.Nodes.get(ans1.get(j)));
+        }
+        assertEquals(l,ans);
 
 
 
-      assertEquals(l,ans);
+
+
+
 
 //        List<NodeData> route = graph.shortestPath(2,4);
 //        Iterator<NodeData> iterator = route.iterator();

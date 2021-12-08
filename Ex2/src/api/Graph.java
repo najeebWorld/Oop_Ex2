@@ -308,12 +308,12 @@ public class Graph implements DirectedWeightedGraph {
 
     @Override
     public int edgeSize() {
-        int count = 0;
-        for (Integer i : this.Edges.keySet()) {
-            count += this.Edges.get(i).size();
-        }
-
-        return count;
+//        int count = 0;
+//        for (Integer i : this.Edges.keySet()) {
+//            count += this.Edges.get(i).size();
+//        }
+//        return count;
+        return edg.size();
     }
 
     @Override
