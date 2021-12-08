@@ -438,8 +438,12 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
         HashMap<List<Integer>,Double> mat_d =Floyd_Warshall(this.myGraph);
         HashMap<List<Integer>,List<Integer>> mat_n =Floyd_Warshall_list(this.myGraph);
-        List<NodeData> city1=cities;
-        List<NodeData> city2=cities;
+        List<NodeData> city1=new ArrayList<NodeData>();
+        List<NodeData> city2=new ArrayList<NodeData>();
+        for (int i=0;i<cities.size();i++) {
+            city1.add(cities.get(i));
+            city2.add(cities.get(i));
+        }
         double small=Double.MAX_VALUE;
         List<Integer> l2=new ArrayList<Integer>();
         //find the smallest connector in this group;
@@ -480,9 +484,12 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             }
         }
 
-double small2=small;
+
         while (city2.size()>0) {
-            double small1 = Double.MAX_VALUE;
+           // double small1 = Double.MAX_VALUE;
+
+            //double small2=small;
+            double small2=Double.MAX_VALUE;
 
             int key_start = ans1.get(0);
             int key_end = ans1.get(ans1.size() - 1);
@@ -490,32 +497,32 @@ double small2=small;
             boolean e = false;
 
             List<Integer> l4 = new ArrayList<Integer>();
-            for (int i = 0; i < cities.size(); i++) {
-                if (cities.get(i).getKey() != key_start) {
+            for (int i = 0; i < city2.size(); i++) {
+                if (city2.get(i).getKey() != key_start) {
                     List<Integer> l3 = new ArrayList<Integer>();
-                    l3.add(cities.get(i).getKey());
+                    l3.add(city2.get(i).getKey());
                     l3.add(key_start);
-                    if (mat_d.get(l3) > small2) {
-                        if (mat_d.get(l3) < small1) {
+                    if (mat_d.get(l3) < small2) {
+                       // if (mat_d.get(l3) < small1) {
                             l4 = l3;
-                            small1 = mat_d.get(l3);
+                          //  small1 = mat_d.get(l3);
                             s = true;
-                        }
+                       // }
                     }
                 }
             }
-            for (int i = 0; i < cities.size(); i++) {
-                if (cities.get(i).getKey() != key_end) {
+            for (int i = 0; i < city2.size(); i++) {
+                if (city2.get(i).getKey() != key_end) {
                     List<Integer> l3 = new ArrayList<Integer>();
                     l3.add(key_end);
-                    l3.add(cities.get(i).getKey());
-                    if (mat_d.get(l3) > small2) {
-                        if (mat_d.get(l3) < small1) {
+                    l3.add(city2.get(i).getKey());
+                    if (mat_d.get(l3) < small2) {
+                       // if (mat_d.get(l3) < small1) {
                             l4 = l3;
-                            small1 = mat_d.get(l3);
+                         //   small1 = mat_d.get(l3);
                             e = true;
                             s = false;
-                        }
+                       // }
                     }
                 }
             }
@@ -543,7 +550,7 @@ double small2=small;
                     city2.remove(k1);
                 }
             }
-            small2 = small1;
+           // small2 = small1;
         }
 
         ArrayList<Integer> l5=new ArrayList<Integer>();
