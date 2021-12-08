@@ -64,8 +64,8 @@ class GraphTest {
     void edgeIter() {
         Iterator<EdgeData> it1= gr.edgeIter();
         EdgeData n1= it1.next();
-        assertEquals(0, n1.getSrc());
-        assertEquals(16,n1.getDest());
+        assertEquals(16, n1.getSrc());
+        assertEquals(15,n1.getDest());
     }
 
     @Test
