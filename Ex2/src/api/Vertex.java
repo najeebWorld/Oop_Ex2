@@ -2,7 +2,7 @@ package api;
 
 import java.awt.*;
 import java.util.HashMap;
-
+// this class is making for me the nodes of my graph .
 public class Vertex implements NodeData{
     int id;
     Geo pos;
@@ -10,8 +10,8 @@ public class Vertex implements NodeData{
     String info;
     int tag;
     Geo g;
-    HashMap<Integer,Integer> nodes;
-
+    HashMap<Integer,Integer> nodes; // hasmap that saves all the nodes
+//constructor .
     public Vertex(int id,Geo pos,int tag,double weight,String info){
         this.id = id;
         this.pos = pos;
@@ -29,7 +29,7 @@ public class Vertex implements NodeData{
         this.info = null;
 
     }
-
+    // copy constructor
     public Vertex(Vertex v){
         this.id = v.getKey();
         this.pos = (Geo) v.getLocation();
@@ -88,15 +88,15 @@ public class Vertex implements NodeData{
     public void setTag(int t) {
         this.tag = t;
     }
-
+    //add nodes to my hash
     public void addToMeList(Edge n){
         this.nodes.put(n.src,n.src);
     }
-
+    // remove from my hash
     public void removeFromList(int n){
         this.nodes.remove(n);
     }
-
+    //return my hash
     public HashMap<Integer,Integer> getnodes(){
         return this.nodes;
     }
