@@ -15,7 +15,8 @@ Graph graph1;
     panel_GUI(Graph g) {
         this.graph1=g;
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setBackground(Color.BLACK);
+       // this.setBackground(Color.BLACK);
+
         int screenHeight = screensize.height;
         int screenWidth = screensize.width;
         this.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
@@ -49,19 +50,20 @@ Graph graph1;
             int y=change_cord_y(yy,y_differ,screenHeight,arr[2]);
             g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
             g2D.setFont(new Font("Ariel", Font.BOLD, 10));
-            g2D.setPaint(Color.PINK);
-            g2D.drawString("key: "+ n.getKey() , x+7,y+7 );
+          //  g2D.setPaint(Color.getHSBColor(120,0,100));
+           // g2D.setPaint(Color.green);
+
+            //g2D.drawString("key: "+ n.getKey() , x+7,y+7 );
         }
 
         g2D.setPaint(Color.BLUE);
         int r2=1;
         g2D.setStroke(new BasicStroke(2*r2));
         Iterator<EdgeData> iter2 = graph1.edgeIter();
+
         while(iter2.hasNext()){
             Edge e=(Edge)iter2.next();
             g2D.setPaint(Color.BLUE);
-
-
             double xx1=graph1.Nodes.get(e.getSrc()).getLocation().x();
             int x1=change_cord_x(xx1,x_differ,screenWidth,arr[0]);
             double yy1=graph1.Nodes.get(e.getSrc()).getLocation().y();
@@ -75,28 +77,28 @@ Graph graph1;
             int xnew=(x1+x2)/2;
             int ynew=(y1+y2)/2;
            // g2D.drawString("weight: "+e.getWeight(),xnew,ynew);
-/*
-            int [] dots=find_tri(x1,x2,y1,y2);
-            int[] xs=new int[3];
-            int[] ys=new int[3];
-            for(int i=0;i<dots.length;i++){
-                if(i<=2){
-                    xs[i]=dots[i];
-                }
-                else{
-                    ys[i-3]=dots[i];
-                }
+            drawArrowLine( g2D,x1, y1, x2, y2, 6,  6);
+
+
+            Iterator<NodeData> iter3 = graph1.nodeIter();
+            while (iter3.hasNext()) {
+               // g2D.setPaint(Color.RED);
+                Vertex n = (Vertex) iter3.next();
+                double xx=n.getLocation().x();
+                int x=change_cord_x(xx,x_differ,screenWidth,arr[0]);
+                double yy=n.getLocation().y();
+                int y=change_cord_y(yy,y_differ,screenHeight,arr[2]);
+               // g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
+                g2D.setFont(new Font("Ariel", Font.BOLD, 11));
+                //  g2D.setPaint(Color.getHSBColor(120,0,100));
+                g2D.setPaint(Color.green);
+                g2D.drawString("key: "+ n.getKey() , x+7,y+7 );
             }
-            Polygon tri= new Polygon(xs,ys,3);
-            g2D.fillPolygon(tri);
-*/
-            drawArrowLine( g2D,x1, y1, x2, y2, 6,  5);
+
+
 
         }
-        g2D.setPaint(Color.BLACK);
-        int[] xs={0,10,5};
-        int[] ys={0,0,6};
-        g2D.fillPolygon(xs,ys,3);
+
 
 
     }
@@ -104,19 +106,16 @@ Graph graph1;
 
     public int change_cord_x(double x,double x_differ,int screenWidth,double minx){
    int x_cor=(int)(((x-minx)/x_differ)*(screenWidth-100));
-        x_cor=x_cor+50;
+        x_cor=x_cor+35;
         return x_cor;
     }
     public int change_cord_y(double y,double y_differ,int screenHeight,double miny){
         int y_cor=(int)(((y-miny)/y_differ)*(screenHeight-100));
-        y_cor=y_cor+50;
+        y_cor=y_cor+35;
         return y_cor;
     }
 
-public void color_dot(int n){
 
-
-}
 
 
     public double[] find_mins_maxs(Graph g) {
@@ -147,21 +146,21 @@ public void color_dot(int n){
         double []arr={minx,maxx,miny,maxy};
         return arr;
     }
-   public int[] find_tri(int x1,int x2, int y1, int y2){
-        double slope=(y2-y1)/(x2-x1);
-        if(slope>0 ) {
-            int[] dots = { x2+4,  x2-4,  x2 + 6,y2-4, +y2+4,  y2+4};
-            return dots;
-        }
-        if(slope<0){
-            int[] dots = { x2-4, x2+4, x2+6, y2+4, +y2-4,  y2-6};
-            return dots;
-        }
-        else{
-            int[] dots = { x2, x2, x2+6, y2+4, +y2-4,  y2};
-            return dots;
-        }
-   }
+//   public int[] find_tri(int x1,int x2, int y1, int y2){
+//        double slope=(y2-y1)/(x2-x1);
+//        if(slope>0 ) {
+//            int[] dots = { x2+4,  x2-4,  x2 + 6,y2-4, +y2+4,  y2+4};
+//            return dots;
+//        }
+//        if(slope<0){
+//            int[] dots = { x2-4, x2+4, x2+6, y2+4, +y2-4,  y2-6};
+//            return dots;
+//        }
+//        else{
+//            int[] dots = { x2, x2, x2+6, y2+4, +y2-4,  y2};
+//            return dots;
+//        }
+//   }
 
     private void drawArrowLine(Graphics g2D, int x1, int y1, int x2, int y2, int d, int h) {
 
@@ -184,7 +183,6 @@ public void color_dot(int n){
 
         int[] xpoints = {x2, (int) xm, (int) xn};
         int[] ypoints = {y2, (int) ym, (int) yn};
-
         g2D.drawLine(x1, y1, x2, y2);
         g2D.fillPolygon(xpoints, ypoints, 3);
     }

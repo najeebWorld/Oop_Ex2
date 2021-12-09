@@ -1,6 +1,8 @@
 package Gui;
 
 import api.*;
+
+import java.io.File;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +22,10 @@ public class frameGui extends JFrame implements ActionListener {
    //public frameGui() {
         super();
         this.a1= (algo)a;
+
         Graph g=a1.myGraph;
-        //a1.load();
+
+
         ImageIcon image= new ImageIcon("green fade.png");
         this.setIconImage(image.getImage());
         this.setResizable(false);
@@ -192,9 +196,19 @@ public class frameGui extends JFrame implements ActionListener {
                    JOptionPane.showMessageDialog(null, "error: src vertex doesn't exist");
                } else {
                    l.add(this.a1.myGraph.Nodes.get(s1));
-                   String dest = JOptionPane.showInputDialog("do ypu want to add more vertexes to the group? if yes return 0, else return 1 ");
-                   int d = Integer.parseInt(dest);
-                   if (d == 1) {
+                   // String dest = JOptionPane.showInputDialog("do you want to add more vertexes to the group? if yes return 0, else return 1 ");
+                   //JOptionPane.showMessageDialog(null,"do you want to add more vertexes to the group? " );
+                   String[] responses = {"yes", "no"};
+                   int answer = JOptionPane.showOptionDialog(
+                           null,
+                           "do you want to add more vertexes to the group? ",
+                           "tsp",
+                           JOptionPane.DEFAULT_OPTION,
+                           0,
+                           null,
+                           responses,
+                           responses[0]);
+                   if (answer == 1) {
                        addmore = false;
                    }
                }
@@ -209,15 +223,35 @@ public class frameGui extends JFrame implements ActionListener {
         }
 
 
-        if(e.getSource()==save){
-             // get file name
-             // run algo with the file name
-        }
+       if(e.getSource()==save){
+            JFileChooser f=new JFileChooser();
+            int ret= f.showDialog(null,null);
+            File file=f.getSelectedFile();
+            if(ret==JFileChooser.APPROVE_OPTION){
+                try {
+                    a1.save(file.getPath());
+                }
+                catch (Exception e1){
+                    throw e1;
+                }
+            }
+       }
 
 
         if(e.getSource()==load){
-         // get file name
-         // run algo with the file name
+            JFileChooser f=new JFileChooser();
+            int ret= f.showDialog(null,null);
+            File file=f.getSelectedFile();
+            if(ret==JFileChooser.APPROVE_OPTION){
+                try {
+                    a1.load(file.getPath());
+                    this.setVisible(false);
+                    frameGui fr = new frameGui(this.a1);
+                }
+                catch (Exception e1){
+                    throw e1;
+                }
+            }
        }
 
 
@@ -227,20 +261,29 @@ public class frameGui extends JFrame implements ActionListener {
            String src1 = JOptionPane.showInputDialog("please enter the x coordinates ");
            double x = Double.parseDouble(src1);
            String src2 = JOptionPane.showInputDialog("please enter the y coordinates ");
-           double y = Double.parseDouble(src1);
+           double y = Double.parseDouble(src2);
            Geo g = new Geo(x, y, 0);
            String src3 = JOptionPane.showInputDialog("please enter the Vertex key ");
            int key = Integer.parseInt(src3);
            if (this.a1.myGraph.Nodes.get(key) != null) {
-               String src4 = JOptionPane.showInputDialog("a Vertex with this key exist, if you want to move it return 0, if you wnt to pick a new key return 1 ");
-               int q = Integer.parseInt(src3);
-               if (q == 0) {
+               //String src4 = JOptionPane.showInputDialog("a Vertex with this key exist, if you want to move it return 0, if you wnt to pick a new key return 1 ");
+               String[] responses = {"yes", "no"};
+               int answer = JOptionPane.showOptionDialog(
+                       null,
+                       "a vertex with this key exits, do you want to move it? ",
+                       "tsp",
+                       JOptionPane.DEFAULT_OPTION,
+                       0,
+                       null,
+                       responses,
+                       responses[1]);
+               if (answer == 0) {
                    Vertex n = new Vertex(key, g);
                    a1.myGraph.addNode(n);
                    this.setVisible(false);
                    frameGui f=new frameGui(this.a1);
                }
-                else if (q == 1) {
+                else {
                    src3 = JOptionPane.showInputDialog("please enter the Vertex key ");
                    key = Integer.parseInt(src3);
                    if (this.a1.myGraph.Nodes.get(key) != null) {
@@ -341,11 +384,10 @@ public class frameGui extends JFrame implements ActionListener {
     }
 
 
-    public static void main(String[] args) {
+  //  public static void main(String[] args) {
 
       //  frameGui myGui=new frameGui("G1.json");
 
 
-    }
 
 }
