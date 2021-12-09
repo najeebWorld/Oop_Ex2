@@ -103,18 +103,7 @@ class VertexTest {
         assertEquals(6,b4.getTag());
     }
 
-    @Test
-    void addToMeList() {
 
-        Edge e2 = new Edge(2,1,0);
-        Edge e3 = new Edge(3,4,5);
-        b1.addToMeList(e2);
-        b4.addToMeList(e3);
-
-        assertEquals(1,b1.getnodes().get(1));
-        assertEquals(1,b2.getnodes().get(1));
-        assertEquals(3,b4.getnodes().get(3));
-    }
 
     @Test
     void removeFromList() {
