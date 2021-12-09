@@ -1,8 +1,10 @@
+import Gui.frameGui;
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 //import Tests.algo;
 
 import api.Graph;
+import api.algo;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -17,8 +19,10 @@ public class Ex2 {
     public static DirectedWeightedGraph getGrapg(String json_file) {
         DirectedWeightedGraph ans = null;
         // ****** Add your code here ******
-        //
-        // ********************************
+        DirectedWeightedGraphAlgorithms a= new algo();
+        a.load(json_file);
+        ans=a.getGraph();
+          // ********************************
         return ans;
     }
     /**
@@ -29,7 +33,7 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         DirectedWeightedGraphAlgorithms ans = null;
         // ****** Add your code here ******
-        //
+        ans=new algo(json_file);
         // ********************************
         return ans;
     }
@@ -41,13 +45,22 @@ public class Ex2 {
     public static void runGUI(String json_file) {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
         // ****** Add your code here ******
-        //
+
+        frameGui myGui=new frameGui(alg);
+
+
+
+
         // ********************************
     }
 
     public static void main(String[] args) throws ParseException {
-         Graph graph=new Graph("Ex2/data/G2.json");
-        System.out.println("Ex2/data/G2.json".toString());
+         //Graph graph=new Graph("Ex2/data/G2.json");
+        //System.out.println("Ex2/data/G2.json".toString());
+        runGUI("myyyjson.json");
+
+
+
 //        algo g = new algo("C:\\Users\\Admin\\IdeaProjects\\Oop_Ex2\\Ex2\\data\\G1.json");
 //        //g.load("C:\\Users\\User\\Downloads\\OOP_2021-main (1)\\OOP_2021-main\\Assignments\\Ex2\\data\\1000Nodes.json");
 //        double t1 = System.currentTimeMillis();
