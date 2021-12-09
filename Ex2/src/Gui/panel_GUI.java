@@ -40,6 +40,9 @@ Graph graph1;
         double y_differ=arr[3]-arr[2];
         int r1=8;
 
+
+        if(graph1.nodeSize()<500){
+
         Iterator<NodeData> iter1 = graph1.nodeIter();
         while (iter1.hasNext()) {
             g2D.setPaint(Color.RED);
@@ -50,7 +53,6 @@ Graph graph1;
             int y=change_cord_y(yy,y_differ,screenHeight,arr[2]);
             g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
             g2D.setFont(new Font("Ariel", Font.BOLD, 10));
-          //  g2D.setPaint(Color.getHSBColor(120,0,100));
            // g2D.setPaint(Color.green);
 
             //g2D.drawString("key: "+ n.getKey() , x+7,y+7 );
@@ -61,47 +63,85 @@ Graph graph1;
         g2D.setStroke(new BasicStroke(2*r2));
         Iterator<EdgeData> iter2 = graph1.edgeIter();
 
-        while(iter2.hasNext()){
-            Edge e=(Edge)iter2.next();
+        while(iter2.hasNext()) {
+            Edge e = (Edge) iter2.next();
             g2D.setPaint(Color.BLUE);
-            double xx1=graph1.Nodes.get(e.getSrc()).getLocation().x();
-            int x1=change_cord_x(xx1,x_differ,screenWidth,arr[0]);
-            double yy1=graph1.Nodes.get(e.getSrc()).getLocation().y();
-            int y1=change_cord_y(yy1,y_differ,screenHeight,arr[2]);
-            double xx2=graph1.Nodes.get(e.getDest()).getLocation().x();
-            int x2=change_cord_x(xx2,x_differ,screenWidth,arr[0]);
-            double yy2=graph1.Nodes.get(e.getDest()).getLocation().y();
-            int y2=change_cord_y(yy2,y_differ,screenHeight,arr[2]);
-           // g2D.drawLine(x1-r2,y1-r2,x2-r2,y2-r2);
-            g2D.setPaint( Color.blue );
-            int xnew=(x1+x2)/2;
-            int ynew=(y1+y2)/2;
-           // g2D.drawString("weight: "+e.getWeight(),xnew,ynew);
-            drawArrowLine( g2D,x1, y1, x2, y2, 6,  6);
+            double xx1 = graph1.Nodes.get(e.getSrc()).getLocation().x();
+            int x1 = change_cord_x(xx1, x_differ, screenWidth, arr[0]);
+            double yy1 = graph1.Nodes.get(e.getSrc()).getLocation().y();
+            int y1 = change_cord_y(yy1, y_differ, screenHeight, arr[2]);
+            double xx2 = graph1.Nodes.get(e.getDest()).getLocation().x();
+            int x2 = change_cord_x(xx2, x_differ, screenWidth, arr[0]);
+            double yy2 = graph1.Nodes.get(e.getDest()).getLocation().y();
+            int y2 = change_cord_y(yy2, y_differ, screenHeight, arr[2]);
+            // g2D.drawLine(x1-r2,y1-r2,x2-r2,y2-r2);
+            g2D.setPaint(Color.blue);
+            int xnew = (x1 + x2) / 2;
+            int ynew = (y1 + y2) / 2;
+            // g2D.drawString("weight: "+e.getWeight(),xnew,ynew);
+            drawArrowLine(g2D, x1, y1, x2, y2, 6, 6);
 
 
             Iterator<NodeData> iter3 = graph1.nodeIter();
             while (iter3.hasNext()) {
-               // g2D.setPaint(Color.RED);
+                // g2D.setPaint(Color.RED);
                 Vertex n = (Vertex) iter3.next();
+                double xx = n.getLocation().x();
+                int x = change_cord_x(xx, x_differ, screenWidth, arr[0]);
+                double yy = n.getLocation().y();
+                int y = change_cord_y(yy, y_differ, screenHeight, arr[2]);
+                // g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
+                g2D.setFont(new Font("Ariel", Font.BOLD, 11));
+                //  g2D.setPaint(Color.getHSBColor(120,0,100));
+                g2D.setPaint(Color.green);
+                g2D.drawString("key: " + n.getKey(), x + 7, y + 7);
+            }
+        }
+        }
+        else{
+            Iterator<NodeData> iter1 = graph1.nodeIter();
+            while (iter1.hasNext()) {
+                g2D.setPaint(Color.RED);
+                Vertex n = (Vertex) iter1.next();
                 double xx=n.getLocation().x();
                 int x=change_cord_x(xx,x_differ,screenWidth,arr[0]);
                 double yy=n.getLocation().y();
                 int y=change_cord_y(yy,y_differ,screenHeight,arr[2]);
-               // g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
-                g2D.setFont(new Font("Ariel", Font.BOLD, 11));
-                //  g2D.setPaint(Color.getHSBColor(120,0,100));
+                g2D.fillOval(x-r1, y-r1, r1*2, r1*2);
+                g2D.setFont(new Font("Ariel", Font.BOLD, 10));
                 g2D.setPaint(Color.green);
                 g2D.drawString("key: "+ n.getKey() , x+7,y+7 );
             }
 
+            g2D.setPaint(Color.BLUE);
+            int r2=1;
+            g2D.setStroke(new BasicStroke(2*r2));
+            Iterator<EdgeData> iter2 = graph1.edgeIter();
 
-
+            while(iter2.hasNext()) {
+                Edge e = (Edge) iter2.next();
+                g2D.setPaint(Color.BLUE);
+                double xx1 = graph1.Nodes.get(e.getSrc()).getLocation().x();
+                int x1 = change_cord_x(xx1, x_differ, screenWidth, arr[0]);
+                double yy1 = graph1.Nodes.get(e.getSrc()).getLocation().y();
+                int y1 = change_cord_y(yy1, y_differ, screenHeight, arr[2]);
+                double xx2 = graph1.Nodes.get(e.getDest()).getLocation().x();
+                int x2 = change_cord_x(xx2, x_differ, screenWidth, arr[0]);
+                double yy2 = graph1.Nodes.get(e.getDest()).getLocation().y();
+                int y2 = change_cord_y(yy2, y_differ, screenHeight, arr[2]);
+                // g2D.drawLine(x1-r2,y1-r2,x2-r2,y2-r2);
+                g2D.setPaint(Color.blue);
+                int xnew = (x1 + x2) / 2;
+                int ynew = (y1 + y2) / 2;
+                // g2D.drawString("weight: "+e.getWeight(),xnew,ynew);
+                drawArrowLine(g2D, x1, y1, x2, y2, 6, 6);
+            }
         }
-
-
-
     }
+
+
+
+
 
 
     public int change_cord_x(double x,double x_differ,int screenWidth,double minx){
