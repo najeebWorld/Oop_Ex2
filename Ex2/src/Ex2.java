@@ -57,7 +57,7 @@ public class Ex2 {
     public static void main(String[] args) throws ParseException {
          //Graph graph=new Graph("Ex2/data/G2.json");
         //System.out.println("Ex2/data/G2.json".toString());
-        runGUI("myyyjson.json");
+        runGUI("G1.json");
 
 
 
