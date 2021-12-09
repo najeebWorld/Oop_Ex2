@@ -59,6 +59,12 @@ class GraphTest {
         graph.getGraph().connect(6,0,0.954);
         boolean b=graph.isConnected();
        assertEquals(true, b);
+//       algo A4=new algo("data\\1000Nodes.json");
+//        assertEquals(true,A4.isConnected());
+//        algo A5=new algo("data\\10000Nodes.json");
+//        assertEquals(true,A5.isConnected());
+//        //algo A6=new algo("data\\100000.json");
+//        //assertEquals(true,A6.isConnected());
     }
 
     @Test
@@ -121,6 +127,12 @@ class GraphTest {
         assertEquals(0,A2.center().getKey());
         algo A3=new algo("data\\G3.json");
         assertEquals(40,A3.center().getKey());
+//        algo A4=new algo("data\\1000Nodes.json");
+//        assertEquals(0,A4.center().getKey());
+//        algo A5=new algo("data\\10000Nodes.json");
+//        assertEquals(0,A5.center().getKey());
+//        algo A6=new algo("data\\100000.json");
+//        assertEquals(0,A6.center().getKey());
 
     }
 
