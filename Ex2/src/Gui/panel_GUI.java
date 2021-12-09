@@ -172,7 +172,7 @@ Graph graph1;
     private void drawArrowLine(Graphics g2D, int x1, int y1, int x2, int y2, int d, int h) {
 
 
-        //https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
+        //  https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
 
 
         int dx = x2 - x1, dy = y2 - y1;
