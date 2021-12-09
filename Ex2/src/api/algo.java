@@ -6,18 +6,14 @@ import org.json.simple.parser.ParseException;
 
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
+
 
 public class algo implements DirectedWeightedGraphAlgorithms {
-    Graph myGraph;//the graph that i work on.
-    // int index;
-    double[] arr;//save the sortest wheight.
+    public Graph myGraph; //the graph that we are working on.
+    double[] arr;//save the smallest weight.
 
-    //the algo constructor get json file and make new graph from it.
 
+    //this algo constructor gets a json file and makes a new graph from it.
     public algo(String jsonName) {
         try {
             myGraph = new Graph(jsonName);
@@ -25,8 +21,8 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             e.printStackTrace();
         }
     }
-    //copy constructor , not deep copy .
 
+    // this algo constructor copies a graph
     public algo(Graph gr1) {
         this.myGraph = gr1;
 
@@ -35,16 +31,20 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
     }
-//default constructor
+
+
+    //default constructor
     public algo() {
         this.myGraph = new Graph();
     }
-//  making deep copy to my graph
+
+
+
     @Override
     public void init(DirectedWeightedGraph g) {
-        //   this.arr =new double[g.nodeSize()];
+
         Iterator<NodeData> al = g.nodeIter();//making iterator for g.
-        while (al.hasNext()) {//while loop on my iterator.
+        while (al.hasNext()) {
             NodeData curr = al.next();
             this.myGraph.addNode(curr);//adding to my graph node by node
         }
@@ -57,13 +57,15 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
     }
 
-//return my graph
+
     @Override
+    //return my graph
     public DirectedWeightedGraph getGraph() {
         return this.myGraph;
     }
 
     @Override
+    // this creates a deep copy of the graph
     public DirectedWeightedGraph copy() {
         Graph g = new Graph();
         Iterator<NodeData> a = myGraph.nodeIter();
@@ -77,71 +79,37 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         }
         return g;
     }
-/*
-    @Override
-    public boolean isConnected() {
-        for (int i = 0; i < this.myGraph.nodeSize() ; i++) {
-            HashMap<Integer,Double> al = shortpath(i);
-            //Iterator <EdgeData> iter =
-                //must add on iter;
-            for (int j = 0; j < this.myGraph.nodeSize(); j++) {
-                if (i == j) {
-                    continue;
-                }
-                if(al.get(j)!= null){
-                    if (al.get(j) == -1) {
-                       return false;
-                }}
-            }
-        }
-        return true;
-    }
-*/
+
+
+    /**
+     *      we will see if you can get from every Vertex to Every Vertex
+     *      if the graph has no nodes by default it is connected
+     *      if the graph has fewer edges than vertexes it can not be connected
+     *      if neither of the if give us an answer
+     *      we will start by marking each vertex as not seen
+     *      taking the first Vertex in the Hashmap of Vertexes
+     *      and running the function tagchild
+     *      after we will iterate through the Vertexes and make sure that all the Vertexes have been seen
+     *      if we find a vertex that hasn't been seen the graph isn't connected
+     *      if all the vertexes have been seen we will flip the graph
+     *      and repeat on the flipped graph
+     *
+     *      the running time is O(|v|^2) v=vertex
+     *      because tagchild running time is O(|v|^2)
+     *      the max run time for flip graph is also O(|v|^2) =O (|v|+|e|)
+     *      when every Vertex has edges to every vertex v*(v-1)+v=v^2
+     * @return
+     */
 
     @Override
     public boolean isConnected() {
-        /*
-        HashMap<List<Integer>, Double> map1 = Floyd_Warshall(this.myGraph);
-        Iterator<NodeData> a1 = myGraph.nodeIter();
-        Vertex v1=null;
-        while (a1.hasNext()){
-         v1=(Vertex) a1.next();
+        if(this.myGraph.nodeSize()==0){
+            return true;
         }
-        Iterator<NodeData> a2 = myGraph.nodeIter();
-        while (a2.hasNext()){
-            Vertex v2=(Vertex) a2.next();
-            if(v1!=v2){
-                List<Integer> l1 = new ArrayList<Integer>();
-                l1.add(v1.getKey());
-                l1.add(v2.getKey());
-                if(map1.get(l1)==Double.MAX_VALUE){
-                    return false;
-                }
-            }
+        if(this.myGraph.edgeSize()<this.myGraph.nodeSize()){
+            return false;
         }
-        Graph newG = flipGraph(this.myGraph);
-        HashMap<List<Integer>, Double> map2 = Floyd_Warshall(newG);
-        Iterator<NodeData> a3 = myGraph.nodeIter();
-        Vertex v3=null;
-        while (a3.hasNext()){
-            v3=(Vertex) a3.next();
-        }
-        Iterator<NodeData> a4 = myGraph.nodeIter();
-        while (a4.hasNext()){
-            Vertex v4=(Vertex) a4.next();
-            if(v1!=v4){
-                List<Integer> l1 = new ArrayList<Integer>();
-                l1.add(v3.getKey());
-                l1.add(v4.getKey());
-                if(map2.get(l1)==Double.MAX_VALUE){
-                    return false;
-                }
-            }
-        }
-        return true;
-        */
 
-        //  Queue<NodeData> Short = new ArrayDeque<>();
         Iterator<NodeData> a1 = myGraph.nodeIter();
         while(a1.hasNext()){
             a1.next().setTag(0);
@@ -157,25 +125,11 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             if(b.next().getTag()!= 1)
                 return false;
         }
+
+
         Graph newG =   flipGraph(myGraph);
 
-        /*
-        Iterator<NodeData> c = myGraph.nodeIter();
-        Vertex nody=null;
-        if(c.hasNext()) {
-            nody = (Vertex) c.next();
-        }
-        tagchild(nody);
-        Iterator<NodeData> d = myGraph.nodeIter();
-        while(d.hasNext()){
-            if(d.next().getTag()!= 1)
-                return false;
-        }
-        */
 
-
-
-        // Queue<NodeData> Short1 = new ArrayDeque<>();
         Iterator<NodeData> c = myGraph.nodeIter();
         while(c.hasNext()){
             c.next().setTag(0);
@@ -193,126 +147,108 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         }
         return true;
 
-
-
     }
+
+
+
+    /**
+     *      we will check if the vertx has been seen
+     *      if it hasn't been seen we will mark that it has been seen
+     *      we will iterate through the Vertexes in the graph
+     *      if the vertex we get to while iterating hasn't been seen and isn't vertex v
+     *      we will see if there is an edge between v and this vertex
+     *      if there is we will run the function again with the new vertex
+     *      the run time of this function is O(|v|^2) v=vertex
+     *
+     * @param v Vertex
+     * @param g Graph
+     */
 
     public void tagchild(Vertex v, Graph g){
-        int key=v.getKey();
+      //  int key=v.getKey();
         if(v.getTag()!=1) {
-            v.setTag(1);
-            Iterator<NodeData> it = g.nodeIter();
-            while(it.hasNext()) {
-                Vertex n = (Vertex) it.next();
-                if (n.getTag() != 1 && n!=v) {
-                    if(g.edg.get(v.getKey()+","+n.getKey())!=null){
-                        // if (this.myGraph.Nodes.get(key).nodes.size() != 0) {
-                        //  v.setTag(1);
-                        //int key = v.getKey();
-                        // Iterator<EdgeData> a = myGraph.edgeIter(key);
-                        //while (a.hasNext()) {
-                        //  int keys = a.next().getDest();
-                        //Vertex v1 = this.myGraph.Nodes.get(keys);
-                        tagchild(n,g);
-                        // }
-                    }
-                }
-            }
-        }
+           v.setTag(1);
+           Iterator<NodeData> it = g.nodeIter();
+           while(it.hasNext()) {
+               Vertex n = (Vertex) it.next();
+               if (n.getTag() != 1 && n!=v) {
+                   if(g.edg.get(v.getKey()+","+n.getKey())!=null){
+                           tagchild(n,g);
+                   }
+               }
+           }
+       }
     }
+
+
+
+    /**
+     *      we will start by creating a new graph
+     *      we will copy the vertexes from the given graph to our new graph
+     *      we will copy the edges from the given graph to our new graph
+     *      BUT we will switch the src and dest
+     *      run time O(|v|+|e|) v=vertexes, e=edges
+     * @param myGraph
+     * @return
+     */
 
     public Graph flipGraph( Graph myGraph){
         Graph newGraph=new Graph ();
-        //  Vertex n1=null;
-        //  Vertex n2=null;
-        //  Edge e1=null;
+
         Iterator<NodeData> a = myGraph.nodeIter();
         while(a.hasNext()){
-            Vertex   n1=(Vertex)a.next();
+         Vertex   n1=(Vertex)a.next();
             n1.nodes.clear();
-            // n1.Edges_in.clear();
             n1.setTag(0);
             newGraph.addNode(n1);
         }
         Iterator<EdgeData> b= myGraph.edgeIter();
         while(b.hasNext()){
-            Edge  e1= (Edge) b.next();
-            Vertex  n1=this.myGraph.Nodes.get(e1.src);
-            Vertex  n2=this.myGraph.Nodes.get(e1.dis);
+          Edge  e1= (Edge) b.next();
+          Vertex  n1=this.myGraph.Nodes.get(e1.src);
+          Vertex  n2=this.myGraph.Nodes.get(e1.dis);
             newGraph.connect(n2.getKey(), n1.getKey(), e1.getWeight());
         }
         return newGraph;
     }
 
+
+
+    /**
+     *  create  a hashmap from the Floyd_Warshall function
+     *  create a list l1 with the src and dest keys
+     *  create the list l2 by getting the value of l1 from the hashmap
+     *  return l2
+     *  the run time of the function is O(|v|^3) because of the Floyd_Warshall function
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
+
     @Override
     public double shortestPathDist(int src, int dest) {
-        //HashMap<Integer, Double> nod = shortpath(src);
 
-        //return nod.get(dest);
         HashMap<List<Integer>, Double> not_mat = Floyd_Warshall(this.myGraph);
         List<Integer> l1 = new ArrayList<Integer>();
         l1.add(src);
         l1.add(dest);
         double ans = not_mat.get(l1);
         return ans;
-//        Queue<NodeData> Short = new ArrayDeque<>();
-//        Short.add(myGraph.getNode(src));
-//        HashMap<Integer,Double> nod = new HashMap<Integer,Double> ();
-//        Iterator<NodeData> e = myGraph.nodeIter();
-//        for(int i =0 ; i< nod.size();i++ )
-//            nod.put(e.next().getKey(), Double.MAX_VALUE);
-//        nod.put(src,0.0);
-//
-//        while(!Short.isEmpty()){
-//            NodeData v =  Short.poll();
-//            Iterator <EdgeData> a = this.myGraph.edgeIter(v.getKey());
-//            while (a.hasNext()){
-//                EdgeData EDGE = a.next();
-//                if(nod.get(EDGE.getDest()) > nod.get(v.getKey())+ EDGE.getWeight()) {
-//                    nod.put(EDGE.getDest(), nod.get(v.getKey()) + EDGE.getWeight());
-//                    Short.add(myGraph.getNode(EDGE.getDest()));
-//                }
-//            }
-//
-//        }
-//        for(Integer i : nod.keySet()){
-//            if(nod.get(i)== Double.MAX_VALUE)
-//                nod.put(i, (double) -1);
-//        }
-//        return nod.get(dest);
-//
-//    }
-//
     }
 
 
-    public HashMap<Integer, Double> shortpath(int src) {
 
-        Queue<NodeData> Short = new ArrayDeque<>();
-        Short.add(myGraph.getNode(src));
-        HashMap<Integer, Double> nod = new HashMap<Integer, Double>();
-        Iterator<NodeData> e = myGraph.nodeIter();
-        for (int i = 0; i < nod.size(); i++) {
-            if (e.next().getKey() != src)
-                nod.put(e.next().getKey(), Double.MAX_VALUE);
-        }
-        nod.put(src, 0.0);
-
-        while (!Short.isEmpty()) {
-            NodeData v = Short.poll();
-            Iterator<EdgeData> a = myGraph.edgeIter(src);
-            while (a.hasNext()) {
-                EdgeData EDGE = a.next();
-                if(nod.get(EDGE.getDest())!= null ){
-                    if (nod.get(EDGE.getDest()) > nod.get(v.getKey()) + EDGE.getWeight()) {
-                        nod.put(EDGE.getDest(), nod.get(v.getKey()) + EDGE.getWeight());
-                        Short.add(myGraph.getNode(EDGE.getDest()));
-                    }}
-            }
-
-        }
-        return nod;
-    }
+    /**
+     *      create  a hashmap from the Floyd_Warshall_list function
+     *      create a list l1 with the src and dest keys
+     *      create a new list  l2 from access the hashmap with the l1 and get its value
+     *      create a new list  l3 of Vertexes from the l2 we got from the hashmap
+     *      return l3
+     *      the run time of the function is O(|v|^3) because of the Floyd_Warshall_list function
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
@@ -328,43 +264,25 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         List<Integer> ans1 = hash.get(l1);
         List<NodeData> ans=new ArrayList<NodeData>();
         for (int i=0; i<ans1.size();i++){
-            ans.add( myGraph.Nodes.get(ans1.get(i)));
+          ans.add( myGraph.Nodes.get(ans1.get(i)));
         }
         return ans;
     }
-//        HashMap<Integer, Double> weight = shortpath(src);
-//        List<NodeData> nod = new ArrayList<>();
-//        NodeData n = myGraph.getNode(src);
-//        nod.add(n);
-////        Geo X = new Geo(1, 1, 2);
-////        n = new Vertex(-1, X);
-////        System.out.println(n);
-//        while (n.getKey() != src) {
-//
-//            double min = Double.MAX_VALUE;
-//            int what_in = Integer.MAX_VALUE;
-//            Iterator<Integer> edge_to_dest = myGraph.in.get(dest).values().iterator();
-//            while (edge_to_dest.hasNext()) {
-//                int node = edge_to_dest.next();
-//                if (node == src) {
-//                    what_in = src;
-//                    break;
-//                }
-//                if(weight.get(node) != null){
-//                  if (min > weight.get(node)) {
-//                    min = weight.get(node);
-//                    what_in = node;
-//                }}
-//
-//            }
-//            dest = what_in;
-//            n = myGraph.getNode(what_in);
-//            nod.add(n);
-//        }
-//        Collections.reverse(nod);
-//        return nod;
 
 
+
+    /**
+     *      if the graph isn't connected the graph doesn't have a center
+     *      create a hashmap from the Floyd_Warshall function
+     *      create a new hashmap that contains the farthest vertex from each vertex when looking at the shortest path between vertexes
+     *      we will create a loop in a loop to find the farthest vertex from each vertex
+     *      and add it to the hashmap
+     *      we will loop through the hashmap to find the vertex with the smallest value
+     *      and return that vertex
+     *      the run time of the function is O(|v|^3) because of the Floyd_Warshall function
+     *
+     * @return
+     */
 
     @Override
     public NodeData center() {
@@ -398,33 +316,39 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             Vertex v3=(Vertex) it3.next();
             if(al.get(v3.getKey())<small){
                 key=v3.getKey();
-                small= al.get(key);
+               small= al.get(key);
             }
         }
-        Vertex ans= myGraph.Nodes.get(key);
-        return ans;
-//        double min = Double.MAX_VALUE;
-//        NodeData nod = null;
-//        for (int i = 0; i < this.myGraph.nodeSize() ; i++) {
-//            HashMap<Integer,Double> al = shortpath(i);
-//
-//            double maxValue = 0;
-//            for (int j = 0; j < this.myGraph.nodeSize(); j++) {
-//                if(al.get(j)!= null){
-//                  if (al.get(j) > maxValue) {
-//                    maxValue = al.get(j);
-//
-//                }
-//            }}
-//            if (maxValue < min) {
-//                min = maxValue;
-//                nod = this.myGraph.getNode(i);
-//            }
-//        }
-//        return nod;
+       Vertex ans= myGraph.Nodes.get(key);
+       return ans;
+
 
 
     }
+
+
+    /**
+     * if cities is empty return null
+     * if cities has 1 city return cities
+     * hashmap1= Floyd_Warshall
+     * hashmap2= Floyd_Warshall_list
+     * create 2 arraylists of the cities city1,city2
+     * crete a loop on a loop to find the shortest path in the cities list
+     * create list ans and add the Vertexes in that path to it
+     * go through ans and remove from city 2 the vertexes in ans
+     * while city2 >0
+     * go through city2 and find the smallest path that we can add on to the left or right
+     * add the Vertexes in that path to ans
+     * go through ans and remove from city 2 the vertexes in ans
+     * we have added all the vertexes from cities to the ans
+     * now we need to connect the last Vertex to the first vertex
+     * return ans
+     * the run time of the function is O(|v|^3) v=vertex or O(|c|!) c=vertexes in cities which ever is bigger
+     *
+     * @param cities
+     * @return
+     */
+
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
@@ -432,11 +356,17 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         if (cities.isEmpty()) {
             return null;
         }
-
+        if(cities.size()==1){
+            return cities;
+        }
         HashMap<List<Integer>,Double> mat_d =Floyd_Warshall(this.myGraph);
         HashMap<List<Integer>,List<Integer>> mat_n =Floyd_Warshall_list(this.myGraph);
-        List<NodeData> city1=cities;
-        List<NodeData> city2=cities;
+        List<NodeData> city1=new ArrayList<NodeData>();
+        List<NodeData> city2=new ArrayList<NodeData>();
+        for (int i=0;i<cities.size();i++) {
+            city1.add(cities.get(i));
+            city2.add(cities.get(i));
+        }
         double small=Double.MAX_VALUE;
         List<Integer> l2=new ArrayList<Integer>();
         //find the smallest connector in this group;
@@ -477,9 +407,9 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             }
         }
 
-        double small2=small;
         while (city2.size()>0) {
-            double small1 = Double.MAX_VALUE;
+
+            double small2=Double.MAX_VALUE;
 
             int key_start = ans1.get(0);
             int key_end = ans1.get(ans1.size() - 1);
@@ -487,32 +417,26 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             boolean e = false;
 
             List<Integer> l4 = new ArrayList<Integer>();
-            for (int i = 0; i < cities.size(); i++) {
-                if (cities.get(i).getKey() != key_start) {
+            for (int i = 0; i < city2.size(); i++) {
+                if (city2.get(i).getKey() != key_start) {
                     List<Integer> l3 = new ArrayList<Integer>();
-                    l3.add(cities.get(i).getKey());
+                    l3.add(city2.get(i).getKey());
                     l3.add(key_start);
-                    if (mat_d.get(l3) > small2) {
-                        if (mat_d.get(l3) < small1) {
+                    if (mat_d.get(l3) < small2) {
                             l4 = l3;
-                            small1 = mat_d.get(l3);
                             s = true;
-                        }
                     }
                 }
             }
-            for (int i = 0; i < cities.size(); i++) {
-                if (cities.get(i).getKey() != key_end) {
+            for (int i = 0; i < city2.size(); i++) {
+                if (city2.get(i).getKey() != key_end) {
                     List<Integer> l3 = new ArrayList<Integer>();
                     l3.add(key_end);
-                    l3.add(cities.get(i).getKey());
-                    if (mat_d.get(l3) > small2) {
-                        if (mat_d.get(l3) < small1) {
+                    l3.add(city2.get(i).getKey());
+                    if (mat_d.get(l3) < small2) {
                             l4 = l3;
-                            small1 = mat_d.get(l3);
                             e = true;
                             s = false;
-                        }
                     }
                 }
             }
@@ -540,7 +464,6 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                     city2.remove(k1);
                 }
             }
-            small2 = small1;
         }
 
         ArrayList<Integer> l5=new ArrayList<Integer>();
@@ -554,36 +477,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         for (int i=0; i<ans1.size();i++){
             ans.add(myGraph.Nodes.get(ans1.get(i)));
         }
-
-        return ans;
-
-
-
-
-        /*
-        List<NodeData> na = new ArrayList<>();
-        int index = 0;
-        NodeData nop = cities.get(index);
-        na.add(nop);
-        cities.remove(nop);
-        while (cities.size() > 0) {
-            double minIndex = Double.MAX_VALUE;
-            HashMap<Integer, Double> shortOne = shortpath(nop.getKey());
-            int i = 0;
-            while (i < cities.size() && shortOne.get(cities.get(i)) != null) {
-                if (shortOne.get(cities.get(i).getKey()) < minIndex) {
-                    minIndex = shortOne.get(cities.get(i).getKey());
-                    index = i;
-                }
-                i++;
-            }
-            nop = cities.get(index);
-            na.add(nop);
-            cities.remove(nop);
-        }
-        return na;
-        */
-        // return null;
+            return ans;
     }
 
 
@@ -591,16 +485,6 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
 
-//        if(cities.isEmpty())
-//             return null;
-//        List<NodeData> nod = cities;
-//
-//        Iterator<NodeData> na = nod.listIterator();
-//        while(na.hasNext()){
-//            NodeData b = na.next();
-//            HashMap <Integer,Double> a = shortpath(b.getKey());
-//
-//            for(Integer i : )
 
 
     @Override
@@ -636,7 +520,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
             return true;
         } catch (Exception e) {
             return false;
-        }}
+    }}
 
     @Override
     public boolean load(String file) {
@@ -652,6 +536,15 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     }
 
 
+
+    /**
+     *      this function finds the shortest path between all 2 vertexes
+     *      here is a explanation to how the code works
+     *      https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+     *      the run time of the function is O(|v|^3)
+     * @param g
+     * @return
+     */
 
     public HashMap<List<Integer>, Double> Floyd_Warshall (Graph g){
 
@@ -669,9 +562,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                 List<Integer> l1=new ArrayList<Integer>();
                 l1.add(n1.getKey());
                 l1.add(n2.getKey());
-                //if(this.myGraph.Nodes.get(n1.getKey()).nes.get(n1.getKey())!=null){
                 if(this.myGraph.edg.get(n1.getKey()+","+n2.getKey())!=null){
-                    // mat_rep.put(l1,this.myGraph.Edges.get(n1.getKey()).get(n1.getKey()).getWeight());
                     mat_rep.put(l1,this.myGraph.edg.get(n1.getKey()+","+n2.getKey()).getWeight());
                 }
                 else{
@@ -732,17 +623,23 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
 
+    /**
+     *      this function finds the shortest path between all 2 vertexes with a list of vertexes keys in the path
+     *      here is a explanation to how the code works
+     *      https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+     *      the run time of the function is O(|v|^3)
+     * @param g
+     * @return
+     */
+
     public HashMap<List<Integer>, List<Integer>>Floyd_Warshall_list (Graph g){
 
         HashMap<List<Integer>, Double> mat_rep=new HashMap<List<Integer>, Double>();
         HashMap<List<Integer>, List<Integer>> mat=new HashMap<List<Integer>, List<Integer>>();
-        //Vertex n1=null;
-        // Vertex n2=null;
-        // Vertex n3=null;
         //filling in the initial values in the hashmap
         Iterator<NodeData> it1 = g.nodeIter();
         while(it1.hasNext()){
-            Vertex n1=(Vertex)it1.next();
+           Vertex n1=(Vertex)it1.next();
             Iterator<NodeData> it2 = g.nodeIter();
             while(it2.hasNext()){
                 Vertex n2=(Vertex)it2.next();
@@ -751,7 +648,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                 l1.add(n2.getKey());
                 if(g.edg.get(n1.getKey()+","+n2.getKey())!=null){
                     mat_rep.put(l1,g.edg.get(n1.getKey()+","+n2.getKey()).getWeight());
-                    // List<> l2=new ArrayList<NodeData>();
+                   // List<> l2=new ArrayList<NodeData>();
                     List<Integer> l2=new ArrayList<Integer>();
                     l2.add(n1.getKey());
                     l2.add(n2.getKey());
@@ -760,14 +657,12 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                 else{
                     if(l1.get(0)==l1.get(1)){
                         mat_rep.put(l1,0.0);
-                        // List<NodeData> l2=new ArrayList<NodeData>();
                         List<Integer> l2=new ArrayList<Integer>();
                         l2.add(n1.getKey());
                         mat.put(l1,l2);
                     }
                     else {
                         mat_rep.put(l1, Double.MAX_VALUE);
-                        //List<NodeData> l2=new ArrayList<NodeData>();
                         List<Integer> l2=new ArrayList<Integer>();
                         l2.add(n1.getKey());
                         l2.add(n2.getKey());
@@ -783,7 +678,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
         Iterator<NodeData> iter1 = g.nodeIter();  //k
         while (iter1.hasNext()) {
-            Vertex n1 = (Vertex) iter1.next();
+           Vertex n1 = (Vertex) iter1.next();
             Iterator<NodeData> iter2 = g.nodeIter();  //i
             while (iter2.hasNext()) {
                 Vertex n2 = (Vertex) iter2.next();
@@ -812,8 +707,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
                             if (w1 > w2 + w3) {
                                 mat_rep.put(l1, w2 + w3);
-                                // List<NodeData> Vs_new= new ArrayList<NodeData>();
-                                // List<NodeData> Vs_old= new ArrayList<NodeData>();
+                                // creating the new list with the path
                                 List<Integer> Vs_new=new ArrayList<Integer>();
                                 List<Integer> Vs_old1=new ArrayList<Integer>();
                                 List<Integer> Vs_old2=new ArrayList<Integer>();
@@ -821,7 +715,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                                 for (int i=0;i<Vs_old1.size();i++){ // don't want to include last so that we don't have a repeat;
                                     Vs_new.add(Vs_old1.get(i));
                                 }
-                                // Vs_old.clear();
+                               // Vs_old.clear();
                                 boolean seen=false;
                                 Vs_old2=mat.get(l3);
                                 for (int i=0;i<Vs_old2.size();i++){
@@ -832,9 +726,8 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                                         }
                                     }
                                     if(!seen)
-                                        Vs_new.add(Vs_old2.get(i));
+                                    Vs_new.add(Vs_old2.get(i));
                                 }
-                                // System.out.println(Vs_new);
                                 mat.put(l1,Vs_new);
 
                             }
@@ -846,8 +739,6 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
         return mat;
     }
-
-
 
 
 }
