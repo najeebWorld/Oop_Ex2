@@ -70,12 +70,12 @@ Graph graph1;
             int x2=change_cord_x(xx2,x_differ,screenWidth,arr[0]);
             double yy2=graph1.Nodes.get(e.getDest()).getLocation().y();
             int y2=change_cord_y(yy2,y_differ,screenHeight,arr[2]);
-            g2D.drawLine(x1-r2,y1-r2,x2-r2,y2-r2);
-            g2D.setPaint( Color.yellow );
+           // g2D.drawLine(x1-r2,y1-r2,x2-r2,y2-r2);
+            g2D.setPaint( Color.blue );
             int xnew=(x1+x2)/2;
             int ynew=(y1+y2)/2;
            // g2D.drawString("weight: "+e.getWeight(),xnew,ynew);
-
+/*
             int [] dots=find_tri(x1,x2,y1,y2);
             int[] xs=new int[3];
             int[] ys=new int[3];
@@ -89,7 +89,8 @@ Graph graph1;
             }
             Polygon tri= new Polygon(xs,ys,3);
             g2D.fillPolygon(tri);
-
+*/
+            drawArrowLine( g2D,x1, y1, x2, y2, 6,  5);
 
         }
         g2D.setPaint(Color.BLACK);
@@ -161,6 +162,33 @@ public void color_dot(int n){
             return dots;
         }
    }
+
+    private void drawArrowLine(Graphics g2D, int x1, int y1, int x2, int y2, int d, int h) {
+
+
+        //https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
+
+
+        int dx = x2 - x1, dy = y2 - y1;
+        double D = Math.sqrt(dx*dx + dy*dy);
+        double xm = D - d, xn = xm, ym = h, yn = -h, x;
+        double sin = dy / D, cos = dx / D;
+
+        x = xm*cos - ym*sin + x1;
+        ym = xm*sin + ym*cos + y1;
+        xm = x;
+
+        x = xn*cos - yn*sin + x1;
+        yn = xn*sin + yn*cos + y1;
+        xn = x;
+
+        int[] xpoints = {x2, (int) xm, (int) xn};
+        int[] ypoints = {y2, (int) ym, (int) yn};
+
+        g2D.drawLine(x1, y1, x2, y2);
+        g2D.fillPolygon(xpoints, ypoints, 3);
+    }
+
 
 }
 
