@@ -10,7 +10,7 @@ import java.util.*;
 
 public class algo implements DirectedWeightedGraphAlgorithms {
     public Graph myGraph; //the graph that we are working on.
-    double[] arr;//save the smallest weight.
+
 
 
     //this algo constructor gets a json file and makes a new graph from it.
@@ -25,12 +25,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     // this algo constructor copies a graph
     public algo(Graph gr1) {
         this.myGraph = gr1;
-
-        this.arr = new double[this.myGraph.nodeSize()];//the size of array is nodesize
-        Iterator<NodeData> al = gr1.nodeIter();//making iterator of NodeData on gr1(gragh)
-
-
-    }
+   }
 
 
     //default constructor
@@ -39,6 +34,11 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     }
 
 
+    /**
+     * makes a copy of the given graph into are graph-myGraph
+     * trun time O(|v|+|e|) v=vertexes, e=edges .
+     * @param g
+     */
 
     @Override
     public void init(DirectedWeightedGraph g) {
@@ -51,21 +51,29 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         Iterator<EdgeData> ag = g.edgeIter();
         while (ag.hasNext()) {
             EdgeData curr = ag.next();
-            this.myGraph.connect(curr.getSrc(), curr.getDest(), curr.getWeight());
-            //adding to myGraph edge by edge.
+            this.myGraph.connect(curr.getSrc(), curr.getDest(), curr.getWeight()); //adding to myGraph edge by edge.
         }
 
     }
 
+    /**
+     * returns the graph
+     * the run time is O(1)
+     * @return
+     */
 
     @Override
-    //return my graph
     public DirectedWeightedGraph getGraph() {
         return this.myGraph;
     }
 
+    /**
+     * this creates a deep copy of the graph
+     * run time O(|v|+|e|) v=vertexes, e=edges .
+     * @return
+     */
+
     @Override
-    // this creates a deep copy of the graph
     public DirectedWeightedGraph copy() {
         Graph g = new Graph();
         Iterator<NodeData> a = myGraph.nodeIter();
@@ -82,7 +90,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
     /**
-     *      we will see if you can get from every Vertex to Every Vertex
+     *      we will check if you can get from every Vertex to Every Vertex
      *      if the graph has no nodes by default it is connected
      *      if the graph has fewer edges than vertexes it can not be connected
      *      if neither of the if give us an answer
@@ -118,8 +126,10 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         Vertex nodi=null;
         if(a.hasNext()) {
             nodi = (Vertex) a.next();
+            if (nodi.getTag()!=1){
+                tagchild(nodi,myGraph,0);
+            }
         }
-        tagchild(nodi,myGraph);
         Iterator<NodeData> b = myGraph.nodeIter();
         while(b.hasNext()){
             if(b.next().getTag()!= 1)
@@ -138,8 +148,11 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         Vertex nody=null;
         if(d.hasNext()) {
             nody = (Vertex)d.next();
+            if(nody.getTag()!=1){
+                tagchild(nody,newG,0);
+            }
         }
-        tagchild(nody,newG);
+
         Iterator<NodeData> e = myGraph.nodeIter();
         while(e.hasNext()){
             if(e.next().getTag()!= 1)
@@ -164,18 +177,21 @@ public class algo implements DirectedWeightedGraphAlgorithms {
      * @param g Graph
      */
 
-    public void tagchild(Vertex v, Graph g){
-      //  int key=v.getKey();
-        if(v.getTag()!=1) {
-           v.setTag(1);
-           Iterator<NodeData> it = g.nodeIter();
-           while(it.hasNext()) {
-               Vertex n = (Vertex) it.next();
-               if (n.getTag() != 1 && n!=v) {
-                   if(g.edg.get(v.getKey()+","+n.getKey())!=null){
-                           tagchild(n,g);
-                   }
-               }
+    public void tagchild(Vertex v, Graph g,int count){
+        if(count<1000){
+        count=count+1;
+            if(v.getTag()!=1) {
+                v.setTag(1);
+                Iterator<NodeData> it = g.nodeIter();
+                while(it.hasNext()) {
+                    Vertex n = (Vertex) it.next();
+                    if (n.getTag() != 1 && n != v) {
+                        if (g.edg.get(v.getKey() + "," + n.getKey()) != null) {
+                            System.out.println(v.getKey());
+                            tagchild(n, g, count);
+                        }
+                    }
+                }
            }
        }
     }
@@ -327,6 +343,7 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     }
 
 
+
     /**
      * if cities is empty return null
      * if cities has 1 city return cities
@@ -348,7 +365,6 @@ public class algo implements DirectedWeightedGraphAlgorithms {
      * @param cities
      * @return
      */
-
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
@@ -481,46 +497,64 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     }
 
 
-
-
-
-
-
+    /**
+     * we created a map
+     * than a jsonObject and jsonArray
+     * we will iterate through the edges and create a linkedList in every iterartion.
+     * we will add the edges parts to the linkedList and dd the linked list to the json array
+     * when we finish iterating through the edges we will add the jsonArray to the Json object.
+     * and do the same thing for the Vertexes.
+     * than we will open a file writer and write the json object into a file
+     * we will flush and clos the file
+     * if we didnt have ant errors we will return true else we will false
+     * the run time is O(|v|+|e|) v=vertexes, e=edges .
+     *
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
 
     @Override
     public boolean save(String file) {
         try {
-            JSONObject jo = new JSONObject();
-            JSONArray ja = new JSONArray();
-            Map m;
-            Iterator<EdgeData> iterator = this.myGraph.edgeIter();
-            while (iterator.hasNext()) {
-                m = new LinkedHashMap(3);
-                EdgeData e = iterator.next();
-                m.put("src", e.getSrc());
-                m.put("w", e.getWeight());
-                m.put("dest", e.getDest());
-                ja.add(m);
+            Map lod;
+            JSONObject najeeb = new JSONObject();
+            JSONArray yehudit = new JSONArray();
+            Iterator<EdgeData> iter = this.myGraph.edgeIter();
+            while (iter.hasNext()) {
+                lod = new LinkedHashMap(3);
+                EdgeData ed = iter.next();
+                lod.put("src", ed.getSrc());
+                lod.put("w", ed.getWeight());
+                lod.put("dest", ed.getDest());
+                yehudit.add(lod);
             }
-            jo.put("Edges", ja);
-            ja = new JSONArray();
-            Iterator<NodeData> iterator1 = this.myGraph.nodeIter();
-            while (iterator1.hasNext()) {
-                m = new LinkedHashMap(2);
-                NodeData n = iterator1.next();
-                m.put("pos", n.getLocation().x() + "," + n.getLocation().y() + "," + n.getLocation().z());
-                m.put("id", n.getKey());
-                ja.add(m);
+            najeeb.put("Edges", yehudit);
+            yehudit = new JSONArray();
+            Iterator<NodeData> iter2 = this.myGraph.nodeIter();
+            while (iter2.hasNext()) {
+                lod = new LinkedHashMap(2);
+                NodeData nod = iter2.next();
+                lod.put("pos", nod.getLocation().x() + "," + nod.getLocation().y() + "," + nod.getLocation().z());
+                lod.put("id", nod.getKey());
+                yehudit.add(lod);
             }
-            jo.put("Nodes", ja);
-            PrintWriter pw = new PrintWriter(file);
-            pw.write(jo.toString());
-            pw.flush();
-            pw.close();
+            najeeb.put("Nodes", yehudit);
+            PrintWriter pro = new PrintWriter(file);
+            pro.write(najeeb.toString());
+            pro.flush();
+            pro.close();
             return true;
         } catch (Exception e) {
             return false;
-    }}
+        }
+    }
+
+    /**
+     * this function loads a graph from json file
+     * the run time is O(|v|+|e|) v=vertexes, e=edges .
+     * @param file - file name of JSON file
+     * @return
+     */
 
     @Override
     public boolean load(String file) {
@@ -625,8 +659,9 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
     /**
      *      this function finds the shortest path between all 2 vertexes with a list of vertexes keys in the path
-     *      here is a explanation to how the code works
+     *      here is a explanation to how the Floyd_Warshall works
      *      https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+     *      in this function as we updated the main hashmap we update the other hashmap with the path
      *      the run time of the function is O(|v|^3)
      * @param g
      * @return
